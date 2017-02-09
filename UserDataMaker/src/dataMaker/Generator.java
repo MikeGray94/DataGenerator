@@ -66,12 +66,13 @@ public class Generator {
 	 */
 	private String createEmail(String firstName, String lastName){
 		emailTemp.setLength(0);
-		emailTemp.append(firstName.substring(0,1));
+		emailTemp.append(firstName.substring(0,1).toLowerCase());
 		emailTemp.append(".");
 		emailTemp.append(lastName);
 		emailTemp.append("@domain.com");
 		return (emailTemp.toString());
 	}
+	
 	/**
 	 * Created on 2017/02/02
 	 * @author mikeg
