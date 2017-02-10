@@ -9,11 +9,11 @@ public class User {
 	
 	private String firstName;
 	private String lastName;
-	private int age;
+	private String age;
 	private String email;
 	private String phoneNum;
 
-	public User(String firstName, String lastName, int age, String email,
+	public User(String firstName, String lastName, String age, String email,
 			String phoneNum) {
 		this.setFirstName(firstName);
 		this.setLastName(lastName);
@@ -38,11 +38,11 @@ public class User {
 		this.lastName = lastName;
 	}
 
-	public int getAge() {
+	public String getAge() {
 		return age;
 	}
 
-	public void setAge(int age) {
+	public void setAge(String age) {
 		this.age = age;
 	}
 
