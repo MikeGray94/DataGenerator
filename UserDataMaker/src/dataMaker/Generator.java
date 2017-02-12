@@ -20,18 +20,22 @@ public class Generator {
 	private StringBuilder nameTemp = new StringBuilder();
 	private StringBuilder emailTemp = new StringBuilder();
 	private StringBuilder phoneTemp = new StringBuilder("07");
+	boolean fNameInc, lNameInc, ageInc, genderInc, profInc, emailInc, phoneNumInc; 
 	
 	/**
 	 * Created on 2017/01/31
 	 * @author mikeg
 	 */
 	private String createFirstName(){
-		nameTemp.setLength(0);
-		for(i = 0; i < (rnd.nextInt(4) + 4); i++ ){
-			char input = (char) (nameTemp.length() == 0 ? (rnd.nextInt(26) + 65) : (rnd.nextInt(26) + 97));
-			nameTemp.append(input);
+		if(fNameInc == true){
+			nameTemp.setLength(0);
+			for(i = 0; i < (rnd.nextInt(4) + 4); i++ ){
+				char input = (char) (nameTemp.length() == 0 ? (rnd.nextInt(26) + 65) : (rnd.nextInt(26) + 97));
+				nameTemp.append(input);
+			}
+			return (nameTemp.toString());
 		}
-		return (nameTemp.toString());
+		return "";
 	}
 	
 	/**
@@ -39,12 +43,15 @@ public class Generator {
 	 * @author mikeg
 	 */
 	private String createLastName(){
-		nameTemp.setLength(0);
-		for(i = 0; i < (rnd.nextInt(6) + 4); i++ ){
-			char input = (char) (nameTemp.length() == 0 ? (rnd.nextInt(26) + 65) : (rnd.nextInt(26) + 97));
-			nameTemp.append(input);
+		if(lNameInc == true){
+			nameTemp.setLength(0);
+			for(i = 0; i < (rnd.nextInt(6) + 4); i++ ){
+				char input = (char) (nameTemp.length() == 0 ? (rnd.nextInt(26) + 65) : (rnd.nextInt(26) + 97));
+				nameTemp.append(input);
+			}
+			return (nameTemp.toString());	
 		}
-		return (nameTemp.toString());
+		return "";
 	}
 	
 	/**
@@ -52,12 +59,15 @@ public class Generator {
 	 * @author mikeg
 	 */
 	private String createPhoneNum(){
-		phoneTemp.setLength(2);
-		for(i=2; i<11; i++){
-			int tempBuild = rnd.nextInt(10);					//Generate random number between 0-9
-			phoneTemp.append(Integer.toString(tempBuild));		//Parse number as string, append to phone number StringBuilder
+		if(phoneNumInc == true){
+			phoneTemp.setLength(2);
+			for(i=2; i<11; i++){
+				int tempBuild = rnd.nextInt(10);					//Generate random number between 0-9
+				phoneTemp.append(Integer.toString(tempBuild));		//Parse number as string, append to phone number StringBuilder
+			}
+			return (phoneTemp.toString());
 		}
-		return (phoneTemp.toString());
+		return "";
 	}
 	
 	/**
@@ -65,9 +75,27 @@ public class Generator {
 	 * @author mikeg
 	 */
 	private String createEmail(String firstName, String lastName){
-		emailTemp.setLength(0);
-		emailTemp.append(firstName.substring(0,1).toLowerCase() + "." + lastName + "@domain.com");
-		return (emailTemp.toString());
+		if(emailInc == true){
+			emailTemp.setLength(0);
+			emailTemp.append(firstName.substring(0,1).toLowerCase() + "." + lastName + "@domain.com");
+			return (emailTemp.toString());
+		}
+		return "";
+	}
+	
+	/**
+	 * Created on 2017/02/12
+	 * @author mikeg
+	 */
+	private String createAge(){
+		if(ageInc == true){
+			return Integer.toString(rnd.nextInt(47) + 18);
+		}
+		return "";
+	}
+	
+	private String createGender(){
+		return "";
 	}
 	
 	/**
@@ -77,7 +105,7 @@ public class Generator {
 	public void createUser(){
 		String fName = createFirstName();
 		String lName = createLastName();
-		User tempUser = new User(fName, lName, Integer.toString(rnd.nextInt(47) + 18), createEmail(fName, lName.toLowerCase()), createPhoneNum());
+		User tempUser = new User(fName, lName, createAge(), createEmail(fName, lName.toLowerCase()), createPhoneNum());
 		getUserList().add(tempUser);
 	}
 	

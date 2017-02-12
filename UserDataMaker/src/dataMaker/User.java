@@ -10,9 +10,19 @@ public class User {
 	private String firstName;
 	private String lastName;
 	private String age;
+	private String gender;
+	private String profession;
 	private String email;
 	private String phoneNum;
 
+	/**
+	 * 
+	 * @param First Name
+	 * @param Last Name
+	 * @param Age
+	 * @param Email
+	 * @param Phone Number
+	 */
 	public User(String firstName, String lastName, String age, String email,
 			String phoneNum) {
 		this.setFirstName(firstName);
