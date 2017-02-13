@@ -1,10 +1,12 @@
 package dataMaker;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -21,7 +23,7 @@ public class GenGUI implements ActionListener {
 	final int width = 640;
 	final int height = 480;
 	JFrame menu = new JFrame("Data Generation");
-	JLabel jlblTop = new JLabel("Select which parameters you require:");
+	JLabel jlblTop = new JLabel("Select required parameters:");
 	JCheckBox jchbFName = new JCheckBox("First Name");
 	JCheckBox jchbLName = new JCheckBox("Last Name");
 	JCheckBox jchbAge = new JCheckBox("Age");
@@ -30,19 +32,32 @@ public class GenGUI implements ActionListener {
 	JCheckBox jchbEmail = new JCheckBox("Email Address");
 	JCheckBox jchbPhone = new JCheckBox("Phone Number");
 	JTextField jtfQuantity = new JTextField("Quantity");
+	JTextField jtfFileName = new JTextField("File Name");
 	JButton jbtnGen = new JButton("Generate");
+	JButton jbtnFile = new JButton("Save As");
 	JPanel inputPane = new JPanel();
-	JPanel outputPane = new JPanel();
+	JPanel viewPane = new JPanel();
 	
 	private GenGUI(){
 				
 
-		inputPane.setLayout(new BoxLayout(inputPane, BoxLayout.Y_AXIS));
-		inputPane.setPreferredSize(new Dimension((width/2)-5, (height/2)-5));		
-		outputPane.setLayout(new FlowLayout());
-		outputPane.setPreferredSize(new Dimension((width/2)-5, (height/2)-5));
+		inputPane.setLayout(new BoxLayout(inputPane, BoxLayout.PAGE_AXIS));
+		inputPane.setPreferredSize(new Dimension((width/3), (height)));	
+		inputPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		viewPane.setLayout(new FlowLayout());
+		viewPane.setPreferredSize(new Dimension(((2*width)/3), (height)));
+		viewPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		
+		jlblTop.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		
 		jbtnGen.addActionListener(this);
+		jbtnFile.addActionListener(this);
+		
+		jtfQuantity.setPreferredSize(new Dimension((width/2)-10, 25));
+		jtfQuantity.setMaximumSize(new Dimension(Integer.MAX_VALUE, jtfFileName.getPreferredSize().height));
+		
+		jtfFileName.setPreferredSize(new Dimension((width/2)-10, 25));
+		jtfFileName.setMaximumSize(new Dimension(Integer.MAX_VALUE, jtfFileName.getPreferredSize().height));
 		
 		jchbFName.addActionListener(this);
 		jchbLName.addActionListener(this);
@@ -67,7 +82,9 @@ public class GenGUI implements ActionListener {
 		inputPane.add(jchbPhone);
 		inputPane.add(jtfQuantity);
 		inputPane.add(jbtnGen);
-		menu.add(outputPane);
+		inputPane.add(jtfFileName);
+		inputPane.add(jbtnFile);
+		menu.add(viewPane);
 	
 		menu.pack();
 		menu.setVisible(true);
@@ -101,13 +118,16 @@ public class GenGUI implements ActionListener {
 					}
 				}
 				output[j] = userInfo.toString();
-				System.out.println(output[j]);
 				j++;
 			}
 			JList<String> dataList = new JList<String>(output);
 			JScrollPane scrollPane = new JScrollPane(dataList);
-			scrollPane.setPreferredSize(new Dimension((width/2)-10,(height/2)-10));
-			outputPane.add(scrollPane);
+			scrollPane.setPreferredSize(new Dimension((width/2)-20,(height/2)-20));
+			viewPane.add(scrollPane);
+			viewPane.revalidate();
+			break;
+			
+		case "Save As":
 			break;
 			
 		case "First Name":
