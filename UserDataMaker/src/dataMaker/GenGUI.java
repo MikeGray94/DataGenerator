@@ -4,8 +4,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -18,7 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-public class GenGUI implements ActionListener, ItemListener {
+public class GenGUI implements ActionListener {
 
 	final int width = 640;
 	final int height = 480;
@@ -84,14 +82,25 @@ public class GenGUI implements ActionListener, ItemListener {
 			for(int i = 0; i < quantity; i++){
 				Generator.getInstance().createUser();
 			}
+			String[] parameters = new String[7];
+			StringBuilder userInfo = new StringBuilder();
 			String[] output = new String[Generator.getInstance().getUserList().size()];
 			int j = 0;
 			for(User u : Generator.getInstance().getUserList()){
-				output[j] = u.getFirstName() + " | "
-						+ u.getLastName() + " | "
-						+ u.getAge() + " | "
-						+ u.getEmail() + " | "
-						+ u.getPhoneNum();
+				userInfo.setLength(0);
+				parameters[0] = u.getFirstName();
+				parameters[1] = u.getLastName();
+				parameters[2] = u.getAge();
+				parameters[3] = u.getGender();
+				parameters[4] = u.getProfession();
+				parameters[5] = u.getEmail();
+				parameters[6] = u.getPhoneNum();
+				for(int k = 0; k < 7; k++){
+					if(parameters[k]!=""){
+						userInfo.append(parameters[k] + " | ");
+					}
+				}
+				output[j] = userInfo.toString();
 				System.out.println(output[j]);
 				j++;
 			}
@@ -101,19 +110,71 @@ public class GenGUI implements ActionListener, ItemListener {
 			outputPane.add(scrollPane);
 			break;
 			
+		case "First Name":
+			if(jchbFName.isSelected()){
+				Generator.getInstance().fNameInc = true;
+			}
+			else{
+				Generator.getInstance().fNameInc = false;
+			}
+			break;
+		
+		case "Last Name":
+			if(jchbLName.isSelected()){
+				Generator.getInstance().lNameInc = true;
+			}
+			else{
+				Generator.getInstance().lNameInc = false;
+			}
+			break;
+			
 		case "Age":
-			if(jchbAge.isSelected())
-				System.out.println("Age selected");
-			else
-				System.out.println("Age deselected");
+			if(jchbAge.isSelected()){
+				Generator.getInstance().ageInc = true;
+			}
+			else{
+				Generator.getInstance().ageInc = false;
+			}
+			break;
+			
+		case "Gender":
+			if(jchbGender.isSelected()){
+				Generator.getInstance().genderInc = true;
+			}
+			else{
+				Generator.getInstance().genderInc = false;
+			}
+			break;
+			
+		case "Profession":
+			if(jchbProf.isSelected()){
+				Generator.getInstance().profInc = true;
+			}
+			else{
+				Generator.getInstance().profInc = false;
+			}
+			break;
+			
+		case "Email Address":
+			if(jchbEmail.isSelected()){
+				Generator.getInstance().emailInc = true;
+			}
+			else{
+				Generator.getInstance().emailInc = false;
+			}
+			break;
+			
+		case "Phone Number":
+			if(jchbPhone.isSelected()){
+				Generator.getInstance().phoneNumInc = true;
+			}
+			else{
+				Generator.getInstance().phoneNumInc = false;
+			}
+			break;
 		}	
 	}
 
-	@Override
-	public void itemStateChanged(ItemEvent iE) {
-		
-	}
-	
 	public static void main(String[] args){
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {

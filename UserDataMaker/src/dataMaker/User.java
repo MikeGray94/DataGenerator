@@ -20,16 +20,19 @@ public class User {
 	 * @param First Name
 	 * @param Last Name
 	 * @param Age
+	 * @param Gender
+	 * @param Profession
 	 * @param Email
 	 * @param Phone Number
 	 */
-	public User(String firstName, String lastName, String age, String email,
-			String phoneNum) {
-		this.setFirstName(firstName);
-		this.setLastName(lastName);
-		this.setAge(age);
-		this.setEmail(email);
-		this.setPhoneNum(phoneNum);
+	public User(String[] args) {
+		this.setFirstName(args[0]);
+		this.setLastName(args[1]);
+		this.setAge(args[2]);
+		this.setGender(args[3]);
+		this.setProfession(args[4]);
+		this.setEmail(args[5]);
+		this.setPhoneNum(args[6]);
 	}
 
 	public String getFirstName() {
@@ -70,6 +73,22 @@ public class User {
 
 	public void setPhoneNum(String phoneNum) {
 		this.phoneNum = phoneNum;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public String getProfession() {
+		return profession;
+	}
+
+	public void setProfession(String profession) {
+		this.profession = profession;
 	}
 	
 

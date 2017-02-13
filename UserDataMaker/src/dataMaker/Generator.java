@@ -77,7 +77,7 @@ public class Generator {
 	private String createEmail(String firstName, String lastName){
 		if(emailInc == true){
 			emailTemp.setLength(0);
-			emailTemp.append(firstName.substring(0,1).toLowerCase() + "." + lastName + "@domain.com");
+			emailTemp.append(firstName.substring(0,1).toLowerCase() + "." + lastName.toLowerCase() + "@domain.com");
 			return (emailTemp.toString());
 		}
 		return "";
@@ -95,6 +95,10 @@ public class Generator {
 	}
 	
 	private String createGender(){
+		if(genderInc == true){
+			String gender = rnd.nextInt(2) == 0 ? "M" : "F";
+			return gender;
+		}
 		return "";
 	}
 	
@@ -103,9 +107,17 @@ public class Generator {
 	 * @author mikeg
 	 */
 	public void createUser(){
+		String[] args = new String[7];
 		String fName = createFirstName();
 		String lName = createLastName();
-		User tempUser = new User(fName, lName, createAge(), createEmail(fName, lName.toLowerCase()), createPhoneNum());
+		args[0] = fName;
+		args[1] = lName;
+		args[2] = createAge();
+		args[3] = createGender();
+		args[4] = "Profession";
+		args[5] = createEmail(fName, lName);
+		args[6] = createPhoneNum();
+		User tempUser = new User(args);
 		getUserList().add(tempUser);
 	}
 	
