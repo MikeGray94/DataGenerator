@@ -35,11 +35,11 @@ public class Main {
 				System.out.println("How many users would you like to view?");
 				quantity = s.nextInt();
 				for(int i = 0; i < quantity; i++){
-					System.out.println("First Name: " + Generator.getInstance().userList.get(i).getFirstName()
-							+ " Last Name: " + Generator.getInstance().userList.get(i).getLastName()
-							+ " Age: " + Generator.getInstance().userList.get(i).getAge()
-							+ " Email: " + Generator.getInstance().userList.get(i).getEmail()
-							+ " Phone Number: " + Generator.getInstance().userList.get(i).getPhoneNum());
+					System.out.println("First Name: " + Generator.getInstance().getUserList().get(i).getFirstName()
+							+ " Last Name: " + Generator.getInstance().getUserList().get(i).getLastName()
+							+ " Age: " + Generator.getInstance().getUserList().get(i).getAge()
+							+ " Email: " + Generator.getInstance().getUserList().get(i).getEmail()
+							+ " Phone Number: " + Generator.getInstance().getUserList().get(i).getPhoneNum());
 				}
 				break;
 				

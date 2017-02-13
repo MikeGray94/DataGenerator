@@ -9,17 +9,30 @@ public class User {
 	
 	private String firstName;
 	private String lastName;
-	private int age;
+	private String age;
+	private String gender;
+	private String profession;
 	private String email;
 	private String phoneNum;
 
-	public User(String firstName, String lastName, int age, String email,
-			String phoneNum) {
-		this.setFirstName(firstName);
-		this.setLastName(lastName);
-		this.setAge(age);
-		this.setEmail(email);
-		this.setPhoneNum(phoneNum);
+	/**
+	 * 
+	 * @param First Name
+	 * @param Last Name
+	 * @param Age
+	 * @param Gender
+	 * @param Profession
+	 * @param Email
+	 * @param Phone Number
+	 */
+	public User(String[] args) {
+		this.setFirstName(args[0]);
+		this.setLastName(args[1]);
+		this.setAge(args[2]);
+		this.setGender(args[3]);
+		this.setProfession(args[4]);
+		this.setEmail(args[5]);
+		this.setPhoneNum(args[6]);
 	}
 
 	public String getFirstName() {
@@ -38,11 +51,11 @@ public class User {
 		this.lastName = lastName;
 	}
 
-	public int getAge() {
+	public String getAge() {
 		return age;
 	}
 
-	public void setAge(int age) {
+	public void setAge(String age) {
 		this.age = age;
 	}
 
@@ -60,6 +73,22 @@ public class User {
 
 	public void setPhoneNum(String phoneNum) {
 		this.phoneNum = phoneNum;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public String getProfession() {
+		return profession;
+	}
+
+	public void setProfession(String profession) {
+		this.profession = profession;
 	}
 	
 
