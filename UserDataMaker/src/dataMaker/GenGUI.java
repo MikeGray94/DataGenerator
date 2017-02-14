@@ -5,6 +5,9 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -95,32 +98,18 @@ public class GenGUI implements ActionListener {
 	public void actionPerformed(ActionEvent aE) {
 		switch(aE.getActionCommand()){
 		case "Generate":
-			int quantity = Integer.parseInt(jtfQuantity.getText());
+			int quantity = 0;
+			try{
+				quantity = Integer.parseInt(jtfQuantity.getText());
+			}
+			catch(NumberFormatException nFE){
+				System.out.println("Invalid input");
+				nFE.printStackTrace();
+			}
 			for(int i = 0; i < quantity; i++){
 				Generator.getInstance().createUser();
 			}
-			String[] parameters = new String[7];
-			StringBuilder userInfo = new StringBuilder();
-			String[] output = new String[Generator.getInstance().getUserList().size()];
-			int j = 0;
-			for(User u : Generator.getInstance().getUserList()){
-				userInfo.setLength(0);
-				parameters[0] = u.getFirstName();
-				parameters[1] = u.getLastName();
-				parameters[2] = u.getAge();
-				parameters[3] = u.getGender();
-				parameters[4] = u.getProfession();
-				parameters[5] = u.getEmail();
-				parameters[6] = u.getPhoneNum();
-				for(int k = 0; k < 7; k++){
-					if(parameters[k]!=""){
-						userInfo.append(parameters[k] + " | ");
-					}
-				}
-				output[j] = userInfo.toString();
-				j++;
-			}
-			JList<String> dataList = new JList<String>(output);
+			JList<String> dataList = new JList<String>(userToString());
 			JScrollPane scrollPane = new JScrollPane(dataList);
 			scrollPane.setPreferredSize(new Dimension((width/2)-20,(height/2)-20));
 			viewPane.add(scrollPane);
@@ -128,6 +117,20 @@ public class GenGUI implements ActionListener {
 			break;
 			
 		case "Save As":
+			try{
+				FileWriter fw = new FileWriter(
+						new File(jtfFileName.getText().isEmpty() 
+								? "userList.txt" : jtfFileName.getText() 
+										+ ".txt"));
+				for(String s : userToString()){
+					fw.write(s);
+					fw.write(System.lineSeparator());
+				}
+				fw.close();
+			}
+			catch(IOException ex){
+				ex.printStackTrace();
+			}
 			break;
 			
 		case "First Name":
@@ -193,6 +196,31 @@ public class GenGUI implements ActionListener {
 			}
 			break;
 		}	
+	}
+	
+	public String[] userToString(){
+		String[] parameters = new String[7];
+		StringBuilder sb = new StringBuilder();
+		String[] output = new String[Generator.getInstance().getUserList().size()];
+		int j = 0;
+		for(User u : Generator.getInstance().getUserList()){
+			sb.setLength(0);
+			parameters[0] = u.getFirstName();
+			parameters[1] = u.getLastName();
+			parameters[2] = u.getAge();
+			parameters[3] = u.getGender();
+			parameters[4] = u.getProfession();
+			parameters[5] = u.getEmail();
+			parameters[6] = u.getPhoneNum();
+			for(int k = 0; k < 7; k++){
+				if(parameters[k]!=""){
+					sb.append(parameters[k] + " | ");
+				}
+			}
+			output[j] = sb.toString();
+			j++;
+		}
+		return output;
 	}
 
 	public static void main(String[] args){
