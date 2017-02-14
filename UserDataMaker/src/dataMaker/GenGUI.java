@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -20,6 +21,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 public class GenGUI implements ActionListener {
 
@@ -42,6 +45,8 @@ public class GenGUI implements ActionListener {
 	JPanel viewPane = new JPanel();
 	
 	private GenGUI(){
+		
+		DocumentListener textListener = new MyDocListener();
 				
 		inputPane.setLayout(new BoxLayout(inputPane, BoxLayout.PAGE_AXIS));
 		inputPane.setPreferredSize(new Dimension((width/3), (height)));	
@@ -52,11 +57,13 @@ public class GenGUI implements ActionListener {
 		
 		jlblTop.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		
+		jbtnGen.setEnabled(false);
 		jbtnGen.addActionListener(this);
 		jbtnFile.addActionListener(this);
 		
 		jtfQuantity.setPreferredSize(new Dimension((width/2)-10, 25));
 		jtfQuantity.setMaximumSize(new Dimension(Integer.MAX_VALUE, jtfFileName.getPreferredSize().height));
+		jtfQuantity.getDocument().addDocumentListener(textListener);
 		
 		jtfFileName.setPreferredSize(new Dimension((width/2)-10, 25));
 		jtfFileName.setMaximumSize(new Dimension(Integer.MAX_VALUE, jtfFileName.getPreferredSize().height));
@@ -220,6 +227,33 @@ public class GenGUI implements ActionListener {
 			j++;
 		}
 		return output;
+	}
+	
+	private class MyDocListener implements DocumentListener{
+
+		@Override
+		public void insertUpdate(DocumentEvent e) {
+			checkInputValid();
+		}
+
+		@Override
+		public void removeUpdate(DocumentEvent e) {
+			checkInputValid();
+		}
+
+		@Override
+		public void changedUpdate(DocumentEvent e) {
+			checkInputValid();
+		}
+	}
+	
+	private void checkInputValid(){
+		if(Pattern.matches("^[0-9]+$", jtfQuantity.getText().trim())){
+			jbtnGen.setEnabled(true);
+		}
+		else{
+			jbtnGen.setEnabled(false);
+		}
 	}
 	
 	public static void main(String[] args){
