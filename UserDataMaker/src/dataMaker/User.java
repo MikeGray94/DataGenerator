@@ -7,14 +7,8 @@ package dataMaker;
  */
 public class User {
 	
-	private String firstName;
-	private String lastName;
-	private String age;
-	private String gender;
-	private String profession;
-	private String email;
-	private String phoneNum;
-
+	private String firstName, lastName, age, gender, profession, email, phoneNum;
+	
 	/**
 	 * 
 	 * @param First Name

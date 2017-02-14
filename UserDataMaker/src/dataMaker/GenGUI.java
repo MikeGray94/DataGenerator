@@ -43,7 +43,6 @@ public class GenGUI implements ActionListener {
 	
 	private GenGUI(){
 				
-
 		inputPane.setLayout(new BoxLayout(inputPane, BoxLayout.PAGE_AXIS));
 		inputPane.setPreferredSize(new Dimension((width/3), (height)));	
 		inputPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -222,7 +221,7 @@ public class GenGUI implements ActionListener {
 		}
 		return output;
 	}
-
+	
 	public static void main(String[] args){
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {

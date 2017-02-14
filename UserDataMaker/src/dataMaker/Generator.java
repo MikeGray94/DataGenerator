@@ -114,7 +114,7 @@ public class Generator {
 		args[1] = lName;
 		args[2] = createAge();
 		args[3] = createGender();
-		args[4] = "Profession";
+		args[4] = Profession.getRandomProf().toString();
 		args[5] = createEmail(fName, lName);
 		args[6] = createPhoneNum();
 		User tempUser = new User(args);
