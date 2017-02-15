@@ -27,7 +27,7 @@ public class Generator {
 	 * @author mikeg
 	 */
 	private String createFirstName(){
-		if(fNameInc == true){
+		if(fNameInc){
 			nameTemp.setLength(0);
 			for(i = 0; i < (rnd.nextInt(4) + 4); i++ ){
 				char input = (char) (nameTemp.length() == 0 ? (rnd.nextInt(26) + 65) : (rnd.nextInt(26) + 97));
@@ -43,7 +43,7 @@ public class Generator {
 	 * @author mikeg
 	 */
 	private String createLastName(){
-		if(lNameInc == true){
+		if(lNameInc){
 			nameTemp.setLength(0);
 			for(i = 0; i < (rnd.nextInt(6) + 4); i++ ){
 				char input = (char) (nameTemp.length() == 0 ? (rnd.nextInt(26) + 65) : (rnd.nextInt(26) + 97));
@@ -59,7 +59,7 @@ public class Generator {
 	 * @author mikeg
 	 */
 	private String createPhoneNum(){
-		if(phoneNumInc == true){
+		if(phoneNumInc){
 			phoneTemp.setLength(2);
 			for(i=2; i<11; i++){
 				int tempBuild = rnd.nextInt(10);					//Generate random number between 0-9
@@ -75,7 +75,7 @@ public class Generator {
 	 * @author mikeg
 	 */
 	private String createEmail(String firstName, String lastName){
-		if(emailInc == true){
+		if(emailInc){
 			emailTemp.setLength(0);
 			emailTemp.append(firstName.substring(0,1).toLowerCase() + "." + lastName.toLowerCase() + "@domain.com");
 			return (emailTemp.toString());
@@ -88,16 +88,23 @@ public class Generator {
 	 * @author mikeg
 	 */
 	private String createAge(){
-		if(ageInc == true){
+		if(ageInc){
 			return Integer.toString(rnd.nextInt(47) + 18);
 		}
 		return "";
 	}
 	
 	private String createGender(){
-		if(genderInc == true){
+		if(genderInc){
 			String gender = rnd.nextInt(2) == 0 ? "M" : "F";
 			return gender;
+		}
+		return "";
+	}
+	
+	private String getProfession(){
+		if(profInc){
+			return Profession.getRandomProf().toString();
 		}
 		return "";
 	}
@@ -108,14 +115,12 @@ public class Generator {
 	 */
 	public void createUser(){
 		String[] args = new String[7];
-		String fName = createFirstName();
-		String lName = createLastName();
-		args[0] = fName;
-		args[1] = lName;
+		args[0] = createFirstName();
+		args[1] = createLastName();
 		args[2] = createAge();
 		args[3] = createGender();
-		args[4] = Profession.getRandomProf().toString();
-		args[5] = createEmail(fName, lName);
+		args[4] = getProfession();
+		args[5] = createEmail(args[0], args[1]);
 		args[6] = createPhoneNum();
 		User tempUser = new User(args);
 		getUserList().add(tempUser);
@@ -125,6 +130,7 @@ public class Generator {
 	 * Created on 2017/02/02
 	 * @author mikeg
 	 * @param fileName
+	 * @deprecated
 	 */
 	public void fileWrite(String fileName){
 		try{

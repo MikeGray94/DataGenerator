@@ -1,8 +1,10 @@
 package dataMaker;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -43,6 +45,13 @@ public class GenGUI implements ActionListener {
 	JButton jbtnFile = new JButton("Save As");
 	JPanel inputPane = new JPanel();
 	JPanel viewPane = new JPanel();
+	JPanel titlePane = new JPanel();
+	JPanel selectionPane = new JPanel();
+	JPanel generatePane = new JPanel();
+	JPanel savePane = new JPanel();
+	JPanel warningPane = new JPanel();
+	JLabel formatWarning = new JLabel("Input is not valid, please try again!");
+	JLabel fileNameWarning = new JLabel("Only alphanumeric characters and spaces are allowed!");
 	
 	private GenGUI(){
 		
@@ -51,22 +60,22 @@ public class GenGUI implements ActionListener {
 		inputPane.setLayout(new BoxLayout(inputPane, BoxLayout.PAGE_AXIS));
 		inputPane.setPreferredSize(new Dimension((width/3), (height)));	
 		inputPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		
 		viewPane.setLayout(new FlowLayout());
 		viewPane.setPreferredSize(new Dimension(((2*width)/3), (height)));
 		viewPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		
-		jlblTop.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		
 		jbtnGen.setEnabled(false);
 		jbtnGen.addActionListener(this);
 		jbtnFile.addActionListener(this);
 		
-		jtfQuantity.setPreferredSize(new Dimension((width/2)-10, 25));
+		jtfQuantity.setPreferredSize(new Dimension((width/3)-20, 25));
 		jtfQuantity.setMaximumSize(new Dimension(Integer.MAX_VALUE, jtfFileName.getPreferredSize().height));
 		jtfQuantity.getDocument().addDocumentListener(textListener);
 		
-		jtfFileName.setPreferredSize(new Dimension((width/2)-10, 25));
+		jtfFileName.setPreferredSize(new Dimension((width/3)-20, 25));
 		jtfFileName.setMaximumSize(new Dimension(Integer.MAX_VALUE, jtfFileName.getPreferredSize().height));
+		jtfFileName.getDocument().addDocumentListener(textListener);
 		
 		jchbFName.addActionListener(this);
 		jchbLName.addActionListener(this);
@@ -81,20 +90,33 @@ public class GenGUI implements ActionListener {
 		menu.setLayout(new FlowLayout());
 		
 		menu.add(inputPane);
-		inputPane.add(jlblTop);
-		inputPane.add(jchbFName);
-		inputPane.add(jchbLName);
-		inputPane.add(jchbAge);
-		inputPane.add(jchbGender);
-		inputPane.add(jchbProf);
-		inputPane.add(jchbEmail);
-		inputPane.add(jchbPhone);
-		inputPane.add(jtfQuantity);
-		inputPane.add(jbtnGen);
-		inputPane.add(jtfFileName);
-		inputPane.add(jbtnFile);
+		inputPane.add(titlePane);
+		titlePane.setMaximumSize(new Dimension((width/3), 50));
+		titlePane.add(jlblTop, BorderLayout.CENTER);
+		
+		inputPane.add(selectionPane);
+		selectionPane.setLayout(new GridLayout(0,1,0,1));
+		selectionPane.add(jchbFName);
+		selectionPane.add(jchbLName);
+		selectionPane.add(jchbAge);
+		selectionPane.add(jchbGender);
+		selectionPane.add(jchbProf);
+		selectionPane.add(jchbEmail);
+		selectionPane.add(jchbPhone);
+		selectionPane.add(jtfQuantity);
+		
+		inputPane.add(generatePane);
+		generatePane.add(jtfQuantity, BorderLayout.LINE_START);
+		generatePane.add(jbtnGen, BorderLayout.LINE_END);
+		
+		inputPane.add(savePane);
+		savePane.add(jtfFileName, BorderLayout.LINE_START);
+		savePane.add(jbtnFile, BorderLayout.LINE_END);
+		
+		inputPane.add(warningPane);
+
 		menu.add(viewPane);
-	
+		
 		menu.pack();
 		menu.setVisible(true);
 		
@@ -109,7 +131,8 @@ public class GenGUI implements ActionListener {
 				quantity = Integer.parseInt(jtfQuantity.getText());
 			}
 			catch(NumberFormatException nFE){
-				System.out.println("Invalid input");
+				warningPane.removeAll();
+				warningPane.add(formatWarning);
 				nFE.printStackTrace();
 			}
 			for(int i = 0; i < quantity; i++){
@@ -117,7 +140,8 @@ public class GenGUI implements ActionListener {
 			}
 			JList<String> dataList = new JList<String>(userToString());
 			JScrollPane scrollPane = new JScrollPane(dataList);
-			scrollPane.setPreferredSize(new Dimension((width/2)-20,(height/2)-20));
+			scrollPane.setPreferredSize(new Dimension((2*width/3)-15,(height)-15));
+			viewPane.removeAll();
 			viewPane.add(scrollPane);
 			viewPane.revalidate();
 			break;
@@ -135,6 +159,8 @@ public class GenGUI implements ActionListener {
 				fw.close();
 			}
 			catch(IOException ex){
+				warningPane.removeAll();
+				warningPane.add(fileNameWarning);
 				ex.printStackTrace();
 			}
 			break;
@@ -253,6 +279,12 @@ public class GenGUI implements ActionListener {
 		}
 		else{
 			jbtnGen.setEnabled(false);
+		}
+		if(Pattern.matches("[a-zA-Z0-9\\s]+", jtfFileName.getText().trim())){
+			jbtnFile.setEnabled(true);
+		}
+		else{
+			jbtnFile.setEnabled(false);
 		}
 	}
 	

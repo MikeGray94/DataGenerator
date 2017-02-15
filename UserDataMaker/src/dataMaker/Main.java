@@ -5,7 +5,7 @@ import java.util.Scanner;
 /**
  * Created on 2017/02/02
  * @author mikeg
- * 
+ * @deprecated
  */
 public class Main {
 
