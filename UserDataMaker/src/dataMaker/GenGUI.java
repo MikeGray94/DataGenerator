@@ -28,8 +28,8 @@ import javax.swing.event.DocumentListener;
 
 public class GenGUI implements ActionListener {
 
-	final int width = 640;
-	final int height = 480;
+	final int width = 800;
+	final int height = 600;
 	JFrame menu = new JFrame("Data Generation");
 	JLabel jlblTop = new JLabel("Select required parameters:");
 	JCheckBox jchbFName = new JCheckBox("First Name");
@@ -40,6 +40,8 @@ public class GenGUI implements ActionListener {
 	JCheckBox jchbEmail = new JCheckBox("Email Address");
 	JCheckBox jchbPhone = new JCheckBox("Phone Number");
 	JTextField jtfQuantity = new JTextField("Quantity");
+	JTextField jtfFNameLength = new JTextField("First Name Length");
+	JTextField jtfLNameLength = new JTextField("Last Name Length");
 	JTextField jtfFileName = new JTextField("File Name");
 	JButton jbtnGen = new JButton("Generate");
 	JButton jbtnFile = new JButton("Save As");
@@ -52,6 +54,7 @@ public class GenGUI implements ActionListener {
 	JPanel warningPane = new JPanel();
 	JLabel formatWarning = new JLabel("Input is not valid, please try again!");
 	JLabel fileNameWarning = new JLabel("Only alphanumeric characters and spaces are allowed!");
+	JPanel[][] panelHolder;
 	
 	private GenGUI(){
 		
@@ -77,6 +80,14 @@ public class GenGUI implements ActionListener {
 		jtfFileName.setMaximumSize(new Dimension(Integer.MAX_VALUE, jtfFileName.getPreferredSize().height));
 		jtfFileName.getDocument().addDocumentListener(textListener);
 		
+		jtfFNameLength.setPreferredSize(new Dimension((width/6)-20, 25));
+		jtfFNameLength.setMaximumSize(new Dimension(Integer.MAX_VALUE, jtfFNameLength.getPreferredSize().height));
+		jtfFNameLength.getDocument().addDocumentListener(textListener);
+		
+		jtfLNameLength.setPreferredSize(new Dimension((width/6)-20, 25));
+		jtfLNameLength.setMaximumSize(new Dimension(Integer.MAX_VALUE, jtfLNameLength.getPreferredSize().height));
+		jtfLNameLength.getDocument().addDocumentListener(textListener);
+		
 		jchbFName.addActionListener(this);
 		jchbLName.addActionListener(this);
 		jchbAge.addActionListener(this);
@@ -95,15 +106,26 @@ public class GenGUI implements ActionListener {
 		titlePane.add(jlblTop, BorderLayout.CENTER);
 		
 		inputPane.add(selectionPane);
-		selectionPane.setLayout(new GridLayout(0,1,0,1));
-		selectionPane.add(jchbFName);
-		selectionPane.add(jchbLName);
-		selectionPane.add(jchbAge);
-		selectionPane.add(jchbGender);
-		selectionPane.add(jchbProf);
-		selectionPane.add(jchbEmail);
-		selectionPane.add(jchbPhone);
-		selectionPane.add(jtfQuantity);
+		selectionPane.setLayout(new GridLayout(0,2,0,1));
+		int rows = 8;
+		int columns = 2;
+		panelHolder = new JPanel[rows][columns];
+		for(int i = 0; i < rows; i++){
+			for(int j = 0; j < columns; j++){
+				panelHolder[i][j] = new JPanel(new FlowLayout(FlowLayout.LEFT));
+				selectionPane.add(panelHolder[i][j]);
+			}
+		}
+		panelHolder[0][0].add(jchbFName);
+		panelHolder[0][1].add(jtfFNameLength);
+		panelHolder[1][0].add(jchbLName);
+		panelHolder[1][1].add(jtfLNameLength);
+		panelHolder[2][0].add(jchbAge);
+		panelHolder[3][0].add(jchbGender);
+		panelHolder[4][0].add(jchbProf);
+		panelHolder[5][0].add(jchbEmail);
+		panelHolder[6][0].add(jchbPhone);
+		panelHolder[7][0].add(jtfQuantity);
 		
 		inputPane.add(generatePane);
 		generatePane.add(jtfQuantity, BorderLayout.LINE_START);
@@ -136,7 +158,9 @@ public class GenGUI implements ActionListener {
 				nFE.printStackTrace();
 			}
 			for(int i = 0; i < quantity; i++){
-				Generator.getInstance().createUser();
+				int fNameLength = Integer.parseInt(jtfFNameLength.getText());
+				int lNameLength = Integer.parseInt(jtfLNameLength.getText());
+				Generator.getInstance().createUser(fNameLength, lNameLength);
 			}
 			JList<String> dataList = new JList<String>(userToString());
 			JScrollPane scrollPane = new JScrollPane(dataList);
@@ -274,12 +298,16 @@ public class GenGUI implements ActionListener {
 	}
 	
 	private void checkInputValid(){
-		if(Pattern.matches("^[0-9]+$", jtfQuantity.getText().trim())){
+		if(Pattern.matches("^[0-9]+$", jtfQuantity.getText().trim())
+				& (Pattern.matches("^[0-9]+$", jtfFNameLength.getText().trim()) | !(Generator.getInstance().fNameInc))
+				& (Pattern.matches("^[0-9]+$",  jtfLNameLength.getText().trim()) | !(Generator.getInstance().lNameInc))
+				){
 			jbtnGen.setEnabled(true);
 		}
 		else{
 			jbtnGen.setEnabled(false);
 		}
+		
 		if(Pattern.matches("[a-zA-Z0-9\\s]+", jtfFileName.getText().trim())){
 			jbtnFile.setEnabled(true);
 		}

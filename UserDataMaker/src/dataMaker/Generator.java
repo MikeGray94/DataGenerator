@@ -20,16 +20,16 @@ public class Generator {
 	private StringBuilder nameTemp = new StringBuilder();
 	private StringBuilder emailTemp = new StringBuilder();
 	private StringBuilder phoneTemp = new StringBuilder("07");
-	boolean fNameInc, lNameInc, ageInc, genderInc, profInc, emailInc, phoneNumInc; 
+	boolean fNameInc, lNameInc, ageInc, genderInc, profInc, emailInc, phoneNumInc;
 	
 	/**
 	 * Created on 2017/01/31
 	 * @author mikeg
 	 */
-	private String createFirstName(){
+	private String createFirstName(int length){
 		if(fNameInc){
 			nameTemp.setLength(0);
-			for(i = 0; i < (rnd.nextInt(4) + 4); i++ ){
+			for(i = 0; i < (rnd.nextInt(4) + (length - 4)); i++ ){
 				char input = (char) (nameTemp.length() == 0 ? (rnd.nextInt(26) + 65) : (rnd.nextInt(26) + 97));
 				nameTemp.append(input);
 			}
@@ -42,10 +42,10 @@ public class Generator {
 	 * Created on 2017/01/31
 	 * @author mikeg
 	 */
-	private String createLastName(){
+	private String createLastName(int length){
 		if(lNameInc){
 			nameTemp.setLength(0);
-			for(i = 0; i < (rnd.nextInt(6) + 4); i++ ){
+			for(i = 0; i < (rnd.nextInt(4) + (length - 4)); i++ ){
 				char input = (char) (nameTemp.length() == 0 ? (rnd.nextInt(26) + 65) : (rnd.nextInt(26) + 97));
 				nameTemp.append(input);
 			}
@@ -77,7 +77,9 @@ public class Generator {
 	private String createEmail(String firstName, String lastName){
 		if(emailInc){
 			emailTemp.setLength(0);
-			emailTemp.append(firstName.substring(0,1).toLowerCase() + "." + lastName.toLowerCase() + "@domain.com");
+			emailTemp.append(firstName.substring(0,1).toLowerCase() + "." 
+					+ lastName.toLowerCase() + "@" 
+					+ Domain.getRandomDomain().toString().toLowerCase() + ".com");
 			return (emailTemp.toString());
 		}
 		return "";
@@ -113,10 +115,10 @@ public class Generator {
 	 * Created on 2017/02/02
 	 * @author mikeg
 	 */
-	public void createUser(){
+	public void createUser(int fNameLength, int lNameLength){
 		String[] args = new String[7];
-		args[0] = createFirstName();
-		args[1] = createLastName();
+		args[0] = createFirstName(fNameLength);
+		args[1] = createLastName(lNameLength);
 		args[2] = createAge();
 		args[3] = createGender();
 		args[4] = getProfession();
