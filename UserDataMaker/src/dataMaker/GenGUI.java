@@ -158,8 +158,10 @@ public class GenGUI implements ActionListener {
 				nFE.printStackTrace();
 			}
 			for(int i = 0; i < quantity; i++){
-				int fNameLength = Integer.parseInt(jtfFNameLength.getText());
-				int lNameLength = Integer.parseInt(jtfLNameLength.getText());
+				int fNameLength = Generator.getInstance().fNameInc 
+						? Integer.parseInt(jtfFNameLength.getText()) : 0;
+				int lNameLength = Generator.getInstance().lNameInc 
+						? Integer.parseInt(jtfLNameLength.getText()) : 0;
 				Generator.getInstance().createUser(fNameLength, lNameLength);
 			}
 			JList<String> dataList = new JList<String>(userToString());
@@ -190,66 +192,31 @@ public class GenGUI implements ActionListener {
 			break;
 			
 		case "First Name":
-			if(jchbFName.isSelected()){
-				Generator.getInstance().fNameInc = true;
-			}
-			else{
-				Generator.getInstance().fNameInc = false;
-			}
+			Generator.getInstance().fNameInc = jchbFName.isSelected();
 			break;
 		
 		case "Last Name":
-			if(jchbLName.isSelected()){
-				Generator.getInstance().lNameInc = true;
-			}
-			else{
-				Generator.getInstance().lNameInc = false;
-			}
+			Generator.getInstance().lNameInc = jchbLName.isSelected();
 			break;
 			
 		case "Age":
-			if(jchbAge.isSelected()){
-				Generator.getInstance().ageInc = true;
-			}
-			else{
-				Generator.getInstance().ageInc = false;
-			}
+			Generator.getInstance().ageInc = jchbAge.isSelected();
 			break;
 			
 		case "Gender":
-			if(jchbGender.isSelected()){
-				Generator.getInstance().genderInc = true;
-			}
-			else{
-				Generator.getInstance().genderInc = false;
-			}
+			Generator.getInstance().genderInc = jchbGender.isSelected();
 			break;
 			
 		case "Profession":
-			if(jchbProf.isSelected()){
-				Generator.getInstance().profInc = true;
-			}
-			else{
-				Generator.getInstance().profInc = false;
-			}
+			Generator.getInstance().profInc = jchbProf.isSelected();
 			break;
 			
 		case "Email Address":
-			if(jchbEmail.isSelected()){
-				Generator.getInstance().emailInc = true;
-			}
-			else{
-				Generator.getInstance().emailInc = false;
-			}
+			Generator.getInstance().emailInc = jchbEmail.isSelected();
 			break;
 			
 		case "Phone Number":
-			if(jchbPhone.isSelected()){
-				Generator.getInstance().phoneNumInc = true;
-			}
-			else{
-				Generator.getInstance().phoneNumInc = false;
-			}
+			Generator.getInstance().phoneNumInc = jchbPhone.isSelected();
 			break;
 		}	
 	}
