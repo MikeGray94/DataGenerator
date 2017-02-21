@@ -29,7 +29,7 @@ public class Generator {
 	private String createFirstName(int length){
 		if(fNameInc){
 			nameTemp.setLength(0);
-			for(i = 0; i < (rnd.nextInt(4) + (length - 4)); i++ ){
+			for(i = 0; i < (rnd.nextInt(4) + (length - 3)); i++ ){
 				char input = (char) (nameTemp.length() == 0 ? (rnd.nextInt(26) + 65) : (rnd.nextInt(26) + 97));
 				nameTemp.append(input);
 			}
@@ -45,7 +45,7 @@ public class Generator {
 	private String createLastName(int length){
 		if(lNameInc){
 			nameTemp.setLength(0);
-			for(i = 0; i < (rnd.nextInt(4) + (length - 4)); i++ ){
+			for(i = 0; i < (rnd.nextInt(4) + (length - 3)); i++ ){
 				char input = (char) (nameTemp.length() == 0 ? (rnd.nextInt(26) + 65) : (rnd.nextInt(26) + 97));
 				nameTemp.append(input);
 			}
@@ -89,9 +89,9 @@ public class Generator {
 	 * Created on 2017/02/12
 	 * @author mikeg
 	 */
-	private String createAge(){
+	private String createAge(int lower, int upper){
 		if(ageInc){
-			return Integer.toString(rnd.nextInt(47) + 18);
+			return Integer.toString(rnd.nextInt(upper-lower+1) + lower);
 		}
 		return "";
 	}
@@ -115,11 +115,11 @@ public class Generator {
 	 * Created on 2017/02/02
 	 * @author mikeg
 	 */
-	public void createUser(int fNameLength, int lNameLength){
+	public void createUser(int fNameLength, int lNameLength, int lower, int upper){
 		String[] args = new String[7];
 		args[0] = createFirstName(fNameLength);
 		args[1] = createLastName(lNameLength);
-		args[2] = createAge();
+		args[2] = createAge(lower, upper);
 		args[3] = createGender();
 		args[4] = getProfession();
 		args[5] = createEmail(args[0], args[1]);

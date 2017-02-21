@@ -43,6 +43,8 @@ public class GenGUI implements ActionListener {
 	JTextField jtfFNameLength = new JTextField("First Name Length");
 	JTextField jtfLNameLength = new JTextField("Last Name Length");
 	JTextField jtfFileName = new JTextField("File Name");
+	JTextField jtfAgeLower = new JTextField();
+	JTextField jtfAgeUpper = new JTextField();
 	JButton jbtnGen = new JButton("Generate");
 	JButton jbtnFile = new JButton("Save As");
 	JPanel inputPane = new JPanel();
@@ -88,6 +90,12 @@ public class GenGUI implements ActionListener {
 		jtfLNameLength.setMaximumSize(new Dimension(Integer.MAX_VALUE, jtfLNameLength.getPreferredSize().height));
 		jtfLNameLength.getDocument().addDocumentListener(textListener);
 		
+		jtfAgeLower.setPreferredSize(new Dimension((width/15)-7, 25));
+		jtfAgeLower.setMaximumSize(new Dimension(Integer.MAX_VALUE, jtfAgeLower.getPreferredSize().height));
+		
+		jtfAgeUpper.setPreferredSize(new Dimension((width/15)-7, 25));
+		jtfAgeUpper.setMaximumSize(new Dimension(Integer.MAX_VALUE, jtfAgeUpper.getPreferredSize().height));
+		
 		jchbFName.addActionListener(this);
 		jchbLName.addActionListener(this);
 		jchbAge.addActionListener(this);
@@ -121,6 +129,9 @@ public class GenGUI implements ActionListener {
 		panelHolder[1][0].add(jchbLName);
 		panelHolder[1][1].add(jtfLNameLength);
 		panelHolder[2][0].add(jchbAge);
+		panelHolder[2][1].add(jtfAgeLower);
+		panelHolder[2][1].add(new JLabel("to"));
+		panelHolder[2][1].add(jtfAgeUpper);
 		panelHolder[3][0].add(jchbGender);
 		panelHolder[4][0].add(jchbProf);
 		panelHolder[5][0].add(jchbEmail);
@@ -162,7 +173,11 @@ public class GenGUI implements ActionListener {
 						? Integer.parseInt(jtfFNameLength.getText()) : 0;
 				int lNameLength = Generator.getInstance().lNameInc 
 						? Integer.parseInt(jtfLNameLength.getText()) : 0;
-				Generator.getInstance().createUser(fNameLength, lNameLength);
+				int ageLower = Generator.getInstance().ageInc
+						? Integer.parseInt(jtfAgeLower.getText()) : 0;
+				int ageUpper = Generator.getInstance().ageInc
+						? Integer.parseInt(jtfAgeUpper.getText()) : 0;
+				Generator.getInstance().createUser(fNameLength, lNameLength, ageLower, ageUpper);
 			}
 			JList<String> dataList = new JList<String>(userToString());
 			JScrollPane scrollPane = new JScrollPane(dataList);
@@ -265,22 +280,12 @@ public class GenGUI implements ActionListener {
 	}
 	
 	private void checkInputValid(){
-		if(Pattern.matches("^[0-9]+$", jtfQuantity.getText().trim())
+		jbtnGen.setEnabled(Pattern.matches("^[0-9]+$", jtfQuantity.getText().trim())
 				& (Pattern.matches("^[0-9]+$", jtfFNameLength.getText().trim()) | !(Generator.getInstance().fNameInc))
-				& (Pattern.matches("^[0-9]+$",  jtfLNameLength.getText().trim()) | !(Generator.getInstance().lNameInc))
-				){
-			jbtnGen.setEnabled(true);
-		}
-		else{
-			jbtnGen.setEnabled(false);
-		}
+				& (Pattern.matches("^[0-9]+$",  jtfLNameLength.getText().trim()) | !(Generator.getInstance().lNameInc)));
 		
-		if(Pattern.matches("[a-zA-Z0-9\\s]+", jtfFileName.getText().trim())){
-			jbtnFile.setEnabled(true);
-		}
-		else{
-			jbtnFile.setEnabled(false);
-		}
+		jbtnFile.setEnabled(Pattern.matches("[a-zA-Z0-9\\s]+", jtfFileName.getText().trim()));
+		
 	}
 	
 	public static void main(String[] args){
