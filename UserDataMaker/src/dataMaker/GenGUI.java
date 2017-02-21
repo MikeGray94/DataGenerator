@@ -39,6 +39,7 @@ public class GenGUI implements ActionListener {
 	JCheckBox jchbProf = new JCheckBox("Profession");
 	JCheckBox jchbEmail = new JCheckBox("Email Address");
 	JCheckBox jchbPhone = new JCheckBox("Phone Number");
+	JCheckBox jchbPostcode = new JCheckBox("Postcode");
 	JTextField jtfQuantity = new JTextField("Quantity");
 	JTextField jtfFNameLength = new JTextField("First Name Length");
 	JTextField jtfLNameLength = new JTextField("Last Name Length");
@@ -103,6 +104,7 @@ public class GenGUI implements ActionListener {
 		jchbProf.addActionListener(this);
 		jchbEmail.addActionListener(this);
 		jchbPhone.addActionListener(this);
+		jchbPostcode.addActionListener(this);
 		
 		menu.setSize(width, height);
 		menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -115,7 +117,7 @@ public class GenGUI implements ActionListener {
 		
 		inputPane.add(selectionPane);
 		selectionPane.setLayout(new GridLayout(0,2,0,1));
-		int rows = 8;
+		int rows = 9;
 		int columns = 2;
 		panelHolder = new JPanel[rows][columns];
 		for(int i = 0; i < rows; i++){
@@ -136,7 +138,9 @@ public class GenGUI implements ActionListener {
 		panelHolder[4][0].add(jchbProf);
 		panelHolder[5][0].add(jchbEmail);
 		panelHolder[6][0].add(jchbPhone);
-		panelHolder[7][0].add(jtfQuantity);
+		panelHolder[7][0].add(jchbPostcode);
+		panelHolder[8][0].add(jtfQuantity);
+
 		
 		inputPane.add(generatePane);
 		generatePane.add(jtfQuantity, BorderLayout.LINE_START);
@@ -233,11 +237,15 @@ public class GenGUI implements ActionListener {
 		case "Phone Number":
 			Generator.getInstance().phoneNumInc = jchbPhone.isSelected();
 			break;
+		
+		case "Postcode":
+			Generator.getInstance().postcodeInc = jchbPostcode.isSelected();
+			break;
 		}	
 	}
 	
 	public String[] userToString(){
-		String[] parameters = new String[7];
+		String[] parameters = new String[8];
 		StringBuilder sb = new StringBuilder();
 		String[] output = new String[Generator.getInstance().getUserList().size()];
 		int j = 0;
@@ -250,7 +258,8 @@ public class GenGUI implements ActionListener {
 			parameters[4] = u.getProfession();
 			parameters[5] = u.getEmail();
 			parameters[6] = u.getPhoneNum();
-			for(int k = 0; k < 7; k++){
+			parameters[7] = u.getPostcode();
+			for(int k = 0; k < 8; k++){
 				if(parameters[k]!=""){
 					sb.append(parameters[k] + " | ");
 				}

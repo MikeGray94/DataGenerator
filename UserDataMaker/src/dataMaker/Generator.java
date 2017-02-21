@@ -1,8 +1,5 @@
 package dataMaker;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -20,7 +17,9 @@ public class Generator {
 	private StringBuilder nameTemp = new StringBuilder();
 	private StringBuilder emailTemp = new StringBuilder();
 	private StringBuilder phoneTemp = new StringBuilder("07");
-	boolean fNameInc, lNameInc, ageInc, genderInc, profInc, emailInc, phoneNumInc;
+	private StringBuilder postcodeTemp = new StringBuilder();
+	boolean fNameInc, lNameInc, ageInc, genderInc, 
+		profInc, emailInc, phoneNumInc, postcodeInc;
 	
 	/**
 	 * Created on 2017/01/31
@@ -30,8 +29,8 @@ public class Generator {
 		if(fNameInc){
 			nameTemp.setLength(0);
 			for(i = 0; i < (rnd.nextInt(4) + (length - 3)); i++ ){
-				char input = (char) (nameTemp.length() == 0 ? (rnd.nextInt(26) + 65) : (rnd.nextInt(26) + 97));
-				nameTemp.append(input);
+				nameTemp.append((char) (nameTemp.length() == 0 
+						? (rnd.nextInt(26) + 65) : (rnd.nextInt(26) + 97)));
 			}
 			return (nameTemp.toString());
 		}
@@ -46,8 +45,8 @@ public class Generator {
 		if(lNameInc){
 			nameTemp.setLength(0);
 			for(i = 0; i < (rnd.nextInt(4) + (length - 3)); i++ ){
-				char input = (char) (nameTemp.length() == 0 ? (rnd.nextInt(26) + 65) : (rnd.nextInt(26) + 97));
-				nameTemp.append(input);
+				nameTemp.append((char) (nameTemp.length() == 0 
+						? (rnd.nextInt(26) + 65) : (rnd.nextInt(26) + 97)));
 			}
 			return (nameTemp.toString());	
 		}
@@ -62,8 +61,7 @@ public class Generator {
 		if(phoneNumInc){
 			phoneTemp.setLength(2);
 			for(i=2; i<11; i++){
-				int tempBuild = rnd.nextInt(10);					//Generate random number between 0-9
-				phoneTemp.append(Integer.toString(tempBuild));		//Parse number as string, append to phone number StringBuilder
+				phoneTemp.append(Integer.toString(rnd.nextInt(10)));		//Parse number as string, append to phone number StringBuilder
 			}
 			return (phoneTemp.toString());
 		}
@@ -98,8 +96,7 @@ public class Generator {
 	
 	private String createGender(){
 		if(genderInc){
-			String gender = rnd.nextInt(2) == 0 ? "M" : "F";
-			return gender;
+			return (rnd.nextInt(2) == 0 ? "M" : "F");
 		}
 		return "";
 	}
@@ -111,12 +108,31 @@ public class Generator {
 		return "";
 	}
 	
+	private String createPostcode(){
+		if(postcodeInc){
+			postcodeTemp.setLength(0);
+			
+			for(i=0; i < (rnd.nextInt(2) + 1); i++){
+				postcodeTemp.append((char) (rnd.nextInt(26) + 65));
+			}
+			
+			postcodeTemp.append(Integer.toString(rnd.nextInt(99) + 1) 
+					+ " " + Integer.toString(rnd.nextInt(10)));
+			
+			for(i=0; i < 2; i++){
+				postcodeTemp.append((char) (rnd.nextInt(26) + 65));
+			}
+			return postcodeTemp.toString();
+		}
+		return "";
+	}
+	
 	/**
 	 * Created on 2017/02/02
 	 * @author mikeg
 	 */
 	public void createUser(int fNameLength, int lNameLength, int lower, int upper){
-		String[] args = new String[7];
+		String[] args = new String[8];
 		args[0] = createFirstName(fNameLength);
 		args[1] = createLastName(lNameLength);
 		args[2] = createAge(lower, upper);
@@ -124,33 +140,9 @@ public class Generator {
 		args[4] = getProfession();
 		args[5] = createEmail(args[0], args[1]);
 		args[6] = createPhoneNum();
+		args[7] = createPostcode();
 		User tempUser = new User(args);
 		getUserList().add(tempUser);
-	}
-	
-	/**
-	 * Created on 2017/02/02
-	 * @author mikeg
-	 * @param fileName
-	 * @deprecated
-	 */
-	public void fileWrite(String fileName){
-		try{
-			FileWriter fw = new FileWriter(new File(fileName + ".txt"));
-			for( User u : getUserList() ){	
-				fw.write(u.getFirstName() + "," 
-						+ u.getLastName() + "," 
-						+ u.getAge() + "," 
-						+ u.getEmail() + "," 
-						+ u.getPhoneNum());
-				fw.write(System.lineSeparator());
-			}
-			fw.close();
-		}
-		catch(IOException ex){
-			System.out.println("Error writing to file.");
-			ex.printStackTrace();				
-		}
 	}
 	
 	private Generator() {}

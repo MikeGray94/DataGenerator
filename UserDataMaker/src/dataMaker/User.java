@@ -7,10 +7,9 @@ package dataMaker;
  */
 public class User {
 	
-	private String firstName, lastName, age, gender, profession, email, phoneNum;
+	private String firstName, lastName, age, gender, profession, email, phoneNum, postcode;
 	
 	/**
-	 * 
 	 * @param First Name
 	 * @param Last Name
 	 * @param Age
@@ -18,6 +17,7 @@ public class User {
 	 * @param Profession
 	 * @param Email
 	 * @param Phone Number
+	 * @param Postcode
 	 */
 	public User(String[] args) {
 		this.setFirstName(args[0]);
@@ -27,6 +27,7 @@ public class User {
 		this.setProfession(args[4]);
 		this.setEmail(args[5]);
 		this.setPhoneNum(args[6]);
+		this.setPostcode(args[7]);
 	}
 
 	public String getFirstName() {
@@ -83,6 +84,14 @@ public class User {
 
 	public void setProfession(String profession) {
 		this.profession = profession;
+	}
+
+	public String getPostcode() {
+		return postcode;
+	}
+
+	public void setPostcode(String postcode) {
+		this.postcode = postcode;
 	}
 	
 
